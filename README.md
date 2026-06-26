@@ -2,12 +2,13 @@
 
 # 🧬 Evolutionary Algorithms Benchmark
 
-### A Python comparison of seven multi-objective optimisation algorithms on ZDT1
+### Seven multi-objective optimisation algorithms · Python · ZDT1
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)](#)
+[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)](#quick-start)
 [![Algorithms](https://img.shields.io/badge/Algorithms-7-brightgreen)](#algorithms)
-[![Benchmark](https://img.shields.io/badge/Problem-ZDT1-orange)](#benchmark-setup)
+[![Benchmark](https://img.shields.io/badge/Benchmark-ZDT1-orange)](#benchmark-setup)
+[![Results](https://img.shields.io/badge/Results-RESULTS.md-blue)](RESULTS.md)
 
 </div>
 
@@ -15,31 +16,44 @@
 
 ## Overview
 
-This repository benchmarks **seven classic multi-objective evolutionary algorithms** implemented from scratch in Python. All algorithms are evaluated on the **ZDT1** test problem and compared using the **Inverted Generational Distance (IGD)** metric and wall-clock runtime.
+This repository benchmarks **seven classic multi-objective evolutionary algorithms**, each implemented from scratch in pure Python. Every algorithm is evaluated on the **ZDT1** test problem under identical conditions, then ranked by convergence quality (IGD) and wall-clock runtime.
+
+> **Multi-objective optimisation** seeks a set of trade-off solutions (the *Pareto front*) rather than a single optimum — e.g. minimising cost *and* maximising performance simultaneously. IGD measures how closely an algorithm's output approximates the true Pareto front (lower = better).
 
 ---
 
 ## Algorithms
 
-| # | Algorithm | File |
+Grouped by paradigm:
+
+### 🐝 Swarm-based
+| Algorithm | Description | File |
 |---|---|---|
-| 1 | **MOEAD-ABC** — Multi-Objective ABC based on Decomposition | [`moeadabc.py`](moeadabc.py) |
-| 2 | **MOEA/D** — Multi-Objective Evolutionary Algorithm / Decomposition | [`moead.py`](moead.py) |
-| 3 | **MOPSO** — Multi-Objective Particle Swarm Optimisation | [`mopso.py`](mopso.py) |
-| 4 | **NSGA-II** — Non-dominated Sorting GA II | [`nsga2.py`](nsga2.py) |
-| 5 | **NSGA-III** — Non-dominated Sorting GA III | [`nsga3.py`](nsga3.py) |
-| 6 | **SPEA2** — Strength Pareto Evolutionary Algorithm 2 | [`spea2.py`](spea2.py) |
-| 7 | **PESA-II** — Pareto Envelope-based Selection Algorithm II | [`pesa2.py`](pesa2.py) |
+| **MOEAD-ABC** | ABC search within a decomposition framework | [`moeadabc.py`](moeadabc.py) |
+| **MOPSO** | Particle swarm with Pareto archiving | [`mopso.py`](mopso.py) |
+
+### 🔀 Decomposition-based
+| Algorithm | Description | File |
+|---|---|---|
+| **MOEA/D** | Scalarisation via weight vectors | [`moead.py`](moead.py) |
+
+### 🏆 Pareto-dominance-based
+| Algorithm | Description | File |
+|---|---|---|
+| **NSGA-II** | Fast non-dominated sort + crowding distance | [`nsga2.py`](nsga2.py) |
+| **NSGA-III** | Reference-point guided selection | [`nsga3.py`](nsga3.py) |
+| **SPEA2** | Strength-based fitness + archive | [`spea2.py`](spea2.py) |
+| **PESA-II** | Grid-based density + Pareto archive | [`pesa2.py`](pesa2.py) |
 
 ---
 
 ## Quick Start
 
 ```bash
-# Run all algorithms and generate figures
+# Run all 7 algorithms and save results + figures
 python run_all.py
 
-# Or run a single algorithm
+# Run a single algorithm
 python main.py -algorithm moeadabc -problem zdt1 -N 100
 ```
 
@@ -49,52 +63,55 @@ python main.py -algorithm moeadabc -problem zdt1 -N 100
 
 | Parameter | Value |
 |---|---|
-| Problem | ZDT1 (2 objectives, 30 decision variables) |
-| Population size | 100 |
-| Function evaluations | 10,000 |
-| Performance metric | IGD ↓ (lower is better) |
+| **Problem** | ZDT1 — 2 objectives, 30 decision variables |
+| **Population** | 100 |
+| **Evaluations** | 10,000 |
+| **Metric** | IGD ↓ (lower is better) |
 
 ---
 
 ## Results
 
-### Performance Summary
+### 📊 Performance Summary
 
-| Rank | Algorithm | IGD Score | Runtime (s) |
-|:---:|---|:---:|:---:|
-| 🥇 | **MOPSO** | **9.59e-03** | 18.74 |
-| 🥈 | **MOEAD-ABC** | **9.60e-03** | **2.70** ⚡ |
-| 3 | SPEA2 | 4.85e+00 | 13.53 |
-| 4 | PESA-II | 8.77e+00 | 6.64 |
-| 5 | NSGA-III | 3.61e+01 | 32.24 |
-| 6 | MOEA/D | 4.55e+01 | 19.24 |
-| 7 | NSGA-II | 4.68e+01 | 30.85 |
+| Rank | Algorithm | Family | IGD ↓ | Runtime (s) |
+|:---:|---|---|:---:|:---:|
+| 🥇 | **MOPSO** | Swarm | **9.59e-03** | 18.74 |
+| 🥈 | **MOEAD-ABC** | Swarm | **9.60e-03** | **2.70** ⚡ |
+| 3 | SPEA2 | Pareto | 4.85e+00 | 13.53 |
+| 4 | PESA-II | Pareto | 8.77e+00 | 6.64 |
+| 5 | NSGA-III | Pareto | 3.61e+01 | 32.24 |
+| 6 | MOEA/D | Decomposition | 4.55e+01 | 19.24 |
+| 7 | NSGA-II | Pareto | 4.68e+01 | 30.85 |
 
-> **Key takeaways:**
-> - MOPSO and MOEAD-ABC both achieve near-perfect Pareto front approximation (~0.009 IGD)
-> - MOEAD-ABC is **7× faster** than MOPSO at equivalent quality
-> - GA-based algorithms (NSGA-II/III, MOEA/D) need larger budgets or advanced operators (SBX / polynomial mutation) to fully converge on 30-variable problems
+**Takeaways**
+
+- 🎯 **MOPSO** and **MOEAD-ABC** both reach near-perfect Pareto approximation (IGD ≈ 0.009)
+- ⚡ **MOEAD-ABC** is **7× faster** than MOPSO at the same quality — the most efficient algorithm overall
+- 📉 GA-based algorithms (NSGA-II/III, MOEA/D) require larger evaluation budgets or advanced operators (SBX / polynomial mutation) to fully converge on 30-variable problems
 
 ---
 
-### Pareto Front Comparison
+### 📈 Pareto Front Comparison
 
-![Combined Pareto fronts for all algorithms vs. true ZDT1 front](figures/combined_comparison.png)
+![All algorithms vs. true ZDT1 Pareto front](figures/combined_comparison.png)
 
 <details>
-<summary>Individual algorithm plots</summary>
+<summary>▶ Individual algorithm plots</summary>
+
+<br>
 
 | MOEAD-ABC | MOPSO |
-|---|---|
-| ![](figures/moeadabc_ZDT1.png) | ![](figures/mopso_ZDT1.png) |
+|:---:|:---:|
+| ![MOEAD-ABC](figures/moeadabc_ZDT1.png) | ![MOPSO](figures/mopso_ZDT1.png) |
 
 | SPEA2 | PESA-II |
-|---|---|
-| ![](figures/spea2_ZDT1.png) | ![](figures/pesa2_ZDT1.png) |
+|:---:|:---:|
+| ![SPEA2](figures/spea2_ZDT1.png) | ![PESA-II](figures/pesa2_ZDT1.png) |
 
 | NSGA-III | MOEA/D | NSGA-II |
-|---|---|---|
-| ![](figures/nsga3_ZDT1.png) | ![](figures/moead_ZDT1.png) | ![](figures/nsga2_ZDT1.png) |
+|:---:|:---:|:---:|
+| ![NSGA-III](figures/nsga3_ZDT1.png) | ![MOEA/D](figures/moead_ZDT1.png) | ![NSGA-II](figures/nsga2_ZDT1.png) |
 
 </details>
 
@@ -104,20 +121,28 @@ python main.py -algorithm moeadabc -problem zdt1 -N 100
 
 ```
 Evolutionary-Algorithms/
-├── main.py          # Single-algorithm entry point
-├── run_all.py       # Run all algorithms and save results
-├── individual.py    # Solution representation
-├── moeadabc.py      # MOEAD-ABC
-├── moead.py         # MOEA/D
-├── mopso.py         # MOPSO
-├── nsga2.py         # NSGA-II
-├── nsga3.py         # NSGA-III
-├── spea2.py         # SPEA2
-├── pesa2.py         # PESA-II
-├── figures/         # Generated Pareto front plots
-├── results/         # Raw numerical results
-└── RESULTS.md       # Detailed benchmark report
+├── main.py           # Single-algorithm entry point (CLI)
+├── run_all.py        # Run all algorithms → results/ + figures/
+├── individual.py     # Shared solution representation
+│
+├── moeadabc.py       # MOEAD-ABC
+├── moead.py          # MOEA/D
+├── mopso.py          # MOPSO
+├── nsga2.py          # NSGA-II
+├── nsga3.py          # NSGA-III
+├── spea2.py          # SPEA2
+├── pesa2.py          # PESA-II
+│
+├── figures/          # Pareto front plots (PNG)
+├── results/          # Raw numerical outputs
+└── RESULTS.md        # Full benchmark report with analysis
 ```
+
+---
+
+## Citation
+
+If you use this code in your research, please cite the relevant algorithm papers. See [RESULTS.md](RESULTS.md) for a full discussion of results.
 
 ---
 

@@ -38,6 +38,9 @@ def _register_defaults() -> None:
     from moead import moead
     from nsga3 import nsga3
     from zdt1 import ZDT1
+    from zdt2 import ZDT2
+    from zdt3 import ZDT3
+    from zdt4 import ZDT4
 
     ALGORITHMS["moeadabc"] = moeadabc
     ALGORITHMS["nsga2"] = nsga2
@@ -47,6 +50,9 @@ def _register_defaults() -> None:
     ALGORITHMS["moead"] = moead
     ALGORITHMS["nsga3"] = nsga3
     PROBLEMS["zdt1"] = ZDT1
+    PROBLEMS["zdt2"] = ZDT2
+    PROBLEMS["zdt3"] = ZDT3
+    PROBLEMS["zdt4"] = ZDT4
 
 
 # ------------------------------------------------------------------
